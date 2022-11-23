@@ -3,18 +3,19 @@
 
 
 int main() {
-    DynamicArray dArr = {};
+    DynamicArray<int> dArr = {};
     dArr.push_back(10);
     dArr.push_back(20);
     dArr.push_back(30);
-
     dArr.printSize();
     dArr.print();
+    
+    DynamicArray<float> fArr = {};
+    fArr.push_back(3.3f);
+    fArr.push_back(20.4f);
+    fArr.push_back(30.11455f);
+    fArr.printSize();
+    fArr.print();
 
-    dArr[1] = 1022;
-    dArr.print();
-
-    dArr.resize(100);
-    dArr.printSize();
     return 0;
 }
