@@ -12,7 +12,7 @@ public:
     void resize(int _iLimit);
     void push_back(const T& _iData);
     void print();
-    void printSize();
+    void print_size();
 
     T& operator[] (int idx);
 
@@ -75,7 +75,7 @@ void DynamicArray<T>::print() {
 }
 
 template <typename T>
-void DynamicArray<T>::printSize() {
+void DynamicArray<T>::print_size() {
     std::cout << "Size : " << m_iSize << "\n";
     std::cout << "Limit : " << m_iLimit << "\n";
 }

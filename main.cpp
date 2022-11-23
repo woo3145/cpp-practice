@@ -1,21 +1,20 @@
 #include <stdio.h>
-#include "Array/DynamicArray.h"
+#include "List/LinkedList.h"
 
 
 int main() {
-    DynamicArray<int> dArr = {};
-    dArr.push_back(10);
-    dArr.push_back(20);
-    dArr.push_back(30);
-    dArr.printSize();
-    dArr.print();
+    LinkedList<int> list;
+
+    list.push_front(4444);
+    list.push_back(10);
+    list.push_back(21);
+    list.push_back(440);
+
+    list.push_front(999);
+    list.push_front(20);
+
+    list.print();
     
-    DynamicArray<float> fArr = {};
-    fArr.push_back(3.3f);
-    fArr.push_back(20.4f);
-    fArr.push_back(30.11455f);
-    fArr.printSize();
-    fArr.print();
 
     return 0;
 }
