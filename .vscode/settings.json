@@ -63,6 +63,7 @@
     "vector": "cpp",
     "algorithm": "cpp",
     "utility": "cpp",
-    "functional": "cpp"
+    "functional": "cpp",
+    "version": "cpp"
   }
 }

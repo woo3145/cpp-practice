@@ -1,20 +1,23 @@
+#include <locale.h>
 #include <stdio.h>
-#include "List/LinkedList.h"
+#include "IoStream/Iostream.h"
+
 
 
 int main() {
-    LinkedList<int> list;
+    setlocale(LC_ALL, "ko_KR");
 
-    list.push_front(4444);
-    list.push_back(10);
-    list.push_back(21);
-    list.push_back(440);
+    MyStd::cout << L"안녕하세요.";
 
-    list.push_front(999);
-    list.push_front(20);
+    char str[10];
+    wchar_t wstr[10];
 
-    list.print();
+    MyStd::cin >> str;
+    MyStd::cin >> wstr;
     
+    MyStd::cout << str << MyStd::endl;
+    MyStd::cout << wstr << MyStd::endl;
+
 
     return 0;
 }
