@@ -24,6 +24,8 @@ private:
 public:
     void push_back(const T& _data);
     void push_front(const T& _data);
+    void size() { return m_iSize };
+
     void print();
 
 public:

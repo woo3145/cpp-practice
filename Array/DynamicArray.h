@@ -11,14 +11,95 @@ private:
 public:
     void resize(int _iLimit);
     void push_back(const T& _iData);
+    T* data() {return m_pData; };
+    int size() { return m_iSize; };
+    int capacity() { return m_iLimit; };
+
     void print();
     void print_size();
 
     T& operator[] (int idx);
+    class iterator;
+    iterator begin();
+    iterator end();
 
 public:
     DynamicArray();
     ~DynamicArray();
+
+    class iterator {
+        private: 
+            DynamicArray* m_pDynamicArray;
+            T* m_pData;
+            int m_iIdx;
+
+        public:
+            T& operator * () {
+                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx){
+                    assert(nullptr);
+                }
+                return m_pData[m_iIdx];
+            }
+            iterator& operator ++ () {
+                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx){
+                    assert(nullptr);
+                }
+                if(m_pDynamicArray->size() -1 == m_iIdx){
+                    m_iIdx = -1;
+                }else {
+                    m_iIdx += 1;
+                }
+                
+                return *this;
+            }
+            iterator operator ++ (int) {
+                iterator copy_iter = *this;
+                ++(*this);
+                return copy_iter;
+            }
+
+            iterator& operator -- () {
+                if(m_pDynamicArray->m_pData != m_pData || 0 == m_iIdx){
+                    assert(nullptr);
+                }
+                if(m_iIdx == -1 && 0 < m_pDynamicArray->size()){
+                    m_iIdx = m_pDynamicArray->size() - 1;
+                }else {
+                    m_iIdx -= 1;
+                }
+                return *this;
+            }
+
+            iterator operator -- (int) {
+                iterator copy_iter = *this; // === iterator copy_iter(*this) 컴파일러가 복사 생성자로 변환
+                --(*this);
+                return copy_iter;
+            }
+
+            bool operator ==(const iterator& other_iterator){
+                if(m_pData == other_iterator.m_pData && m_iIdx == other_iterator.m_iIdx){
+                    return true;
+                }
+                return false;
+            }
+            bool operator !=(const iterator& other_iterator){
+                return !(*this == other_iterator);
+            }
+
+            
+        public:
+        iterator()
+            : m_pDynamicArray(nullptr)
+            , m_pData(nullptr)
+            , m_iIdx(-1){
+        };
+        iterator(DynamicArray* _pDynamicArray, T* _pData, int _iIdx)
+            : m_pDynamicArray(_pDynamicArray)
+            , m_pData(_pData)
+            , m_iIdx(_iIdx){
+        };
+        ~iterator(){};
+    };
 };
 
 
@@ -86,4 +167,18 @@ T& DynamicArray<T>::operator[] (int idx) {
         assert(nullptr);
     }
     return m_pData[idx];
+}
+
+template <typename T>
+typename DynamicArray<T>::iterator DynamicArray<T>::begin() {
+    if(m_iSize == 0) {
+        return iterator(this, m_pData, -1);
+    }else {
+        return iterator(this, m_pData, 0);
+    }
+}
+
+template <typename T>
+typename DynamicArray<T>::iterator DynamicArray<T>::end() {
+    return iterator(this, m_pData, -1);
 }

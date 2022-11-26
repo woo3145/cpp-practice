@@ -64,6 +64,7 @@
     "algorithm": "cpp",
     "utility": "cpp",
     "functional": "cpp",
-    "version": "cpp"
+    "version": "cpp",
+    "list": "cpp"
   }
 }
