@@ -22,6 +22,11 @@ public:
     class iterator;
     iterator begin();
     iterator end();
+    iterator erase(iterator& _iter);
+
+    void clear() {
+        m_iSize = 0;
+    }
 
 public:
     DynamicArray();
@@ -32,16 +37,17 @@ public:
             DynamicArray* m_pDynamicArray;
             T* m_pData;
             int m_iIdx;
+            bool m_bValid;
 
         public:
             T& operator * () {
-                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx){
+                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx || !m_bValid){
                     assert(nullptr);
                 }
                 return m_pData[m_iIdx];
             }
             iterator& operator ++ () {
-                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx){
+                if(m_pDynamicArray->m_pData != m_pData || -1 == m_iIdx || !m_bValid){
                     assert(nullptr);
                 }
                 if(m_pDynamicArray->size() -1 == m_iIdx){
@@ -59,7 +65,7 @@ public:
             }
 
             iterator& operator -- () {
-                if(m_pDynamicArray->m_pData != m_pData || 0 == m_iIdx){
+                if(m_pDynamicArray->m_pData != m_pData || 0 == m_iIdx || !m_bValid){
                     assert(nullptr);
                 }
                 if(m_iIdx == -1 && 0 < m_pDynamicArray->size()){
@@ -91,14 +97,20 @@ public:
         iterator()
             : m_pDynamicArray(nullptr)
             , m_pData(nullptr)
-            , m_iIdx(-1){
+            , m_iIdx(-1)
+            , m_bValid(false){
         };
         iterator(DynamicArray* _pDynamicArray, T* _pData, int _iIdx)
             : m_pDynamicArray(_pDynamicArray)
             , m_pData(_pData)
-            , m_iIdx(_iIdx){
+            , m_iIdx(_iIdx)
+            , m_bValid(false){
+            if(nullptr != _pDynamicArray && 0 <= _iIdx) {
+                m_bValid = true;
+            }
         };
         ~iterator(){};
+        friend class DynamicArray;
     };
 };
 
@@ -181,4 +193,19 @@ typename DynamicArray<T>::iterator DynamicArray<T>::begin() {
 template <typename T>
 typename DynamicArray<T>::iterator DynamicArray<T>::end() {
     return iterator(this, m_pData, -1);
+}
+
+template <typename T>
+typename DynamicArray<T>::iterator DynamicArray<T>::erase(iterator& _iter) {
+
+    if(this != _iter.m_pDynamicArray || end() == _iter || m_iSize <= _iter.m_iIdx){
+        assert(nullptr);
+    }
+
+    for(int i = _iter.m_iIdx; i < m_iSize; ++i){
+        m_pData[i] = m_pData[i + 1];
+    }
+    _iter.m_bValid = false;
+    --m_iSize;
+    return iterator(this, m_pData, 0);
 }
