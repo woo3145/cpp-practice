@@ -1,7 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <list>
-#include "Array/DynamicArray.h"
+#include "Array/Vector.h"
 
 using std::cout;
 using std::cin;
@@ -11,30 +10,18 @@ using std::list;
 
 int main() {
 
+    Vector<int> myVector;
 
-    DynamicArray<int> dArr;
+    myVector.push_back(1);
+    myVector.push_back(2);
+    myVector.push_back(3);
 
-    dArr.push_back(10);
-    dArr.push_back(20);
-    dArr.push_back(30);
-    DynamicArray<int>::iterator myIter = dArr.begin();
-
-    for(; myIter != dArr.end(); myIter++){
+    Vector<int>::iterator myIter = myVector.begin();
+    myIter = myVector.erase(myIter);
+    for(; myIter != myVector.end(); ++myIter){
         cout << *myIter << endl;
     }
-    dArr.clear();
-    for(int i = 0; i < 11; ++i){
-        dArr.push_back(i);
-    }
+    cout << myVector.data() << endl;
 
-    myIter = dArr.begin();
-    for(; myIter != dArr.end();){
-        if(*myIter % 2 == 0){
-            myIter = dArr.erase(myIter);
-        }else {
-            ++myIter;
-        }
-    }
-    dArr.print();
     return 0;
 }
