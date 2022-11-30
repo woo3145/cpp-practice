@@ -32,6 +32,8 @@ public:
     class iterator;
     iterator begin();
     iterator end();
+    iterator insert(iterator& _iter, const T& _data); 
+    iterator erase(iterator& _iter);
 
 public:
     LinkedList();
@@ -179,4 +181,66 @@ typename LinkedList<T>::iterator LinkedList<T>::begin() {
 template <typename T>
 typename LinkedList<T>::iterator LinkedList<T>::end() {
     return iterator(this, nullptr);
+}
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::insert(LinkedList<T>::iterator& _iter, const T& _data) {
+    if(!_iter.m_bValid) {
+        std::cout << "LinkedList::iterator::insert 유효하지 않은 이터레이터" << std::endl;
+        assert(nullptr);
+    }
+    if(end() == _iter) {
+        std::cout << "LinkedList::iterator::insert end iterator에서 호출됨" << std::endl;
+        assert(nullptr);
+    }
+    Node<T>* newNode = new Node<T>(_data,nullptr,nullptr);
+    
+    if(_iter.m_pNode == m_pHeadNode) {
+        _iter.m_pNode->pPrev = newNode;
+        newNode->pNext = _iter.m_pNode;
+
+        m_pHeadNode = newNode;
+    }else{
+        // 앞부분 연결
+        _iter.m_pNode->pPrev->pNext = newNode;
+        newNode->pPrev = _iter.m_pNode->pPrev;
+        // 뒷부분 연결
+        _iter.m_pNode->pPrev = newNode;
+        newNode->pNext = _iter.m_pNode;
+    }
+    ++m_iSize;
+    _iter.m_bValid = false;
+
+    return iterator(this, newNode);
+}
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::erase(LinkedList<T>::iterator& _iter){
+    if(!_iter.m_bValid) {
+        std::cout << "LinkedList::iterator::erase 유효하지 않은 이터레이터" << std::endl;
+        assert(nullptr);
+    }
+    if(end() == _iter) {
+        std::cout << "LinkedList::iterator::erase end iterator에서 호출됨" << std::endl;
+        assert(nullptr);
+    }
+
+    // begin 이터레이터인지 확인하고 각각 헤더 또는 이전노드에 다음노드를 연결시킨다.
+    // 다음노드가 nullptr 일수도 있음
+    if(begin() == _iter){
+        m_pHeadNode = _iter.m_pNode->pNext;
+    }else {
+        _iter.m_pNode->pPrev->pNext = _iter.m_pNode->pNext;
+    }
+
+    // 만약 다음노드가 있다면 다음노드에 이전 노드를 연결시켜준다.
+    if(_iter.m_pNode->pNext != nullptr){
+        _iter.m_pNode->pNext->pPrev = _iter.m_pNode->pPrev;
+    }
+
+    --m_iSize;
+    _iter.m_bValid = false;
+
+    return iterator(this, _iter.m_pNode->pNext);
+
 }

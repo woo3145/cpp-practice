@@ -14,13 +14,20 @@ int main() {
 
     LinkedList<int> myList;
     LinkedList<int>::iterator myIter;
-    myList.push_back(1);
-    myList.push_back(2);
-    myList.push_back(3);
+    for(int i = 1; i <= 10; ++i) {
+        myList.push_back(i);
+    }
     myIter = myList.begin();
-    myIter++;
-    cout << *myIter << endl;
-    myIter--;
-    cout << *myIter << endl;
+    for(; myIter != myList.end();){
+        if(*myIter % 2 == 0){
+            myIter = myList.erase(myIter);
+        }else {
+            ++myIter;
+        }
+    }
+
+    for(myIter = myList.begin(); myIter != myList.end(); ++myIter){
+        cout << *myIter << endl;
+    }
     return 0;
 }
