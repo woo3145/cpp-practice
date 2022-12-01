@@ -66,6 +66,9 @@
     "functional": "cpp",
     "version": "cpp",
     "list": "cpp",
-    "iterator": "cpp"
+    "iterator": "cpp",
+    "__tree": "cpp",
+    "map": "cpp",
+    "set": "cpp"
   }
 }
